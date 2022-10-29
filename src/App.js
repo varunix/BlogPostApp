@@ -1,58 +1,83 @@
-import './App.css';
+import "./App.css";
 import Header from "./MyComponents/Header";
-import {Body} from "./MyComponents/Body";
-import {Footer} from "./MyComponents/Footer";
-import React, { useState } from 'react';
-import {AddToPosts} from './MyComponents/AddToPosts';
+import { Body } from "./MyComponents/Body";
+import { Footer } from "./MyComponents/Footer";
+import React, { useEffect, useState } from "react";
+import { AddToPosts } from "./MyComponents/AddToPosts";
+import { About } from './MyComponents/About';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
 
 function App() {
-  const onDelete = (post)=>{
-    console.log("On Delete of post:", post);
-    setPosts(posts.filter((e)=>{
-      return e !== post;
-    }));
+  let initposts;
+  if (localStorage.getItem("posts") === null) {
+    initposts = [];
+  } else {
+    initposts = JSON.parse(localStorage.getItem("posts"));
   }
 
-  const addToPosts = (title, desc)=>{
+  const onDelete = (post) => {
+    console.log("On Delete of post:", post);
+    setPosts(
+      posts.filter((e) => {
+        return e !== post;
+      })
+    );
+    localStorage.setItem("posts", JSON.stringify(posts));
+  };
+
+  const addToPosts = (title, desc) => {
     console.log("Add this post", title, desc);
     let sno;
-    if(posts.length === 0) {
+    if (posts.length === 0) {
       sno = 0;
     } else {
-      sno = posts[posts.length-1].sno + 1;
+      sno = posts[posts.length - 1].sno + 1;
     }
+
     const myPost = {
       sno: sno,
       title: title,
-      desc: desc
-    }
+      desc: desc,
+    };
+
     setPosts([...posts, myPost]);
-  }
-  
-  const [posts, setPosts] = useState([
-    {
-      sno: 1,
-      title: "Lorem ipsum dolor sit.First",
-      desc: "Lorem ipsum dolor sit amet c First onsectetur adipisicing elit. Eaque, explicabo?"
-    },
-    {
-      sno: 2,
-      title: "Lorem ipsum dolor sit.Second",
-      desc: "Lorem ipsum dolor sit amet co Second nsectetur adipisicing elit. Eaque, explicabo?"
-    },
-    {
-      sno: 3,
-      title: "Lorem ipsum dolor sit.Third",
-      desc: "Lorem ipsum dolor sit amet consectet Third ur adipisicing elit. Eaque, explicabo?"
-    },
-  ]);
+    console.log(myPost);
+  };
+
+  const [posts, setPosts] = useState(initposts);
+  useEffect(() => {
+    localStorage.setItem("posts", JSON.stringify(posts));
+  }, [posts]);
 
   return (
     <>
-    <Header title="Blog Post" searchBar={false}/>
-    <AddToPosts addToPosts={addToPosts}/>
-    <Body posts={posts} onDelete={onDelete}/>
-    <Footer/>
+      <Router>
+        <Header title="Blog Post" searchBar={false} />
+        <Routes>
+          <Route
+            exact
+            path="/"
+            // render={() => {
+            //   return (
+            //   <>
+            //     <AddToPosts addToPosts={addToPosts} />
+            //     <Body posts={posts} onDelete={onDelete} />
+            //   </>
+            //   )
+            // }}
+            element={<><AddToPosts addToPosts={addToPosts} /><Body posts={posts} onDelete={onDelete}/></>}
+          >
+          </Route>
+          <Route exact path="/about" element={<About/>}>
+          </Route>
+        </Routes>
+
+        <Footer />
+      </Router>
     </>
   );
 }
