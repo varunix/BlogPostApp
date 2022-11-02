@@ -2,8 +2,8 @@ import React from "react";
 
 export const Footer = () => {
   return (
-    <footer className="bg-dark text-light py-3">
-      <p className="text-center">Copyright &copy; Blog Post App</p>
+    <footer className="footer bg-dark text-light">
+      <p className="text-center">Copyright &copy; Blog Post App by Varun Chaubey</p>
     </footer>
   );
 };

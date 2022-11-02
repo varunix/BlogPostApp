@@ -15,7 +15,7 @@ export const AddToPosts = (props) => {
   };
 
   return (
-    <div className="container my-3">
+    <div className="my-3">
       <form onSubmit={submit}>
         <h3>Add Post</h3>
         <div className="mb-3">
@@ -35,7 +35,7 @@ export const AddToPosts = (props) => {
           <label htmlFor="desc" className="form-label">
             Post Description
           </label>
-          <input
+          <textarea
             type="text"
             value={desc}
             onChange={(e) => setDesc(e.target.value)}

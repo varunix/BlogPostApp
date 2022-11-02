@@ -2,13 +2,8 @@ import React, { Fragment } from "react";
 import { Post } from "./Post";
 
 export const Body = (props) => {
-  let bodyStyle = {
-    minHeight: "70vh",
-    margin: "40px auto",
-  };
-
   return (
-    <div className="container" style={bodyStyle}>
+    <div className="container">
       <h3 className="my-3">Post List</h3>
       {props.posts.length === 0
         ? "No Posts to Display"

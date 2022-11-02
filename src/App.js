@@ -3,13 +3,9 @@ import Header from "./MyComponents/Header";
 import { Body } from "./MyComponents/Body";
 import { Footer } from "./MyComponents/Footer";
 import React, { useEffect, useState } from "react";
-import { AddToPosts } from "./MyComponents/AddToPosts";
-import { About } from './MyComponents/About';
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from "react-router-dom";
+import { About } from "./MyComponents/About";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AddPostButton } from "./MyComponents/AddPostButton";
 
 function App() {
   let initposts;
@@ -19,8 +15,9 @@ function App() {
     initposts = JSON.parse(localStorage.getItem("posts"));
   }
 
+  const [buttonPopup, setButtonPopup] = useState(false);
+
   const onDelete = (post) => {
-    console.log("On Delete of post:", post);
     setPosts(
       posts.filter((e) => {
         return e !== post;
@@ -61,19 +58,15 @@ function App() {
           <Route
             exact
             path="/"
-            // render={() => {
-            //   return (
-            //   <>
-            //     <AddToPosts addToPosts={addToPosts} />
-            //     <Body posts={posts} onDelete={onDelete} />
-            //   </>
-            //   )
-            // }}
-            element={<><AddToPosts addToPosts={addToPosts} /><Body posts={posts} onDelete={onDelete}/></>}
-          >
-          </Route>
-          <Route exact path="/about" element={<About/>}>
-          </Route>
+            element={
+              <>
+                <button onClick={() => setButtonPopup(true)} className="addButton btn btn-success btn-lg">Add</button>
+                <AddPostButton addToPosts={addToPosts} trigger={buttonPopup} setTrigger={setButtonPopup} />
+                <Body posts={posts} onDelete={onDelete} />
+              </>
+            }
+          ></Route>
+          <Route exact path="/about" element={<About />}></Route>
         </Routes>
 
         <Footer />
