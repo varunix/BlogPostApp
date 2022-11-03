@@ -28,7 +28,6 @@ export const AddToPosts = (props) => {
             onChange={(e) => setTitle(e.target.value)}
             className="form-control"
             id="title"
-            aria-describedby="emailHelp"
           />
         </div>
         <div className="mb-3">
@@ -46,6 +45,8 @@ export const AddToPosts = (props) => {
         <button type="submit" className="btn btn-sm btn-success">
           Submit
         </button>
+        &nbsp;
+        <button type="reset" className="btn btn-sm btn-light" onClick={()=>{setTitle(""); setDesc("")}}>Reset</button>
       </form>
     </div>
   );

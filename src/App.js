@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { About } from "./MyComponents/About";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AddPostButton } from "./MyComponents/AddPostButton";
+import { EditButton } from "./MyComponents/EditButton";
 
 function App() {
   let initposts;
@@ -16,6 +17,12 @@ function App() {
   }
 
   const [buttonPopup, setButtonPopup] = useState(false);
+  const [editButtonPopup, setEditButtonPopup] = useState(false);
+  const [editArr, setEditArr] = useState();
+  const [posts, setPosts] = useState(initposts);
+  useEffect(() => {
+    localStorage.setItem("posts", JSON.stringify(posts));
+  }, [posts]);
 
   const onDelete = (post) => {
     setPosts(
@@ -23,11 +30,31 @@ function App() {
         return e !== post;
       })
     );
+
     localStorage.setItem("posts", JSON.stringify(posts));
   };
 
+  // useEffect(()=>console.log(editArr),[editArr]);
+  // useEffect(()=>console.log(posts),[posts]);
+
+  const onEdit = (post, update=false) => {
+    setEditArr(()=>post);
+    if(update){
+      const newPost = posts.map(e => {
+        if(e.sno === post.sno) {
+          return {
+            sno: post.sno,
+            title: post.title,
+            desc: post.desc
+          }
+        }
+        return e;
+      });
+      setPosts(newPost);
+    }
+  }
+
   const addToPosts = (title, desc) => {
-    console.log("Add this post", title, desc);
     let sno;
     if (posts.length === 0) {
       sno = 0;
@@ -42,13 +69,7 @@ function App() {
     };
 
     setPosts([...posts, myPost]);
-    console.log(myPost);
   };
-
-  const [posts, setPosts] = useState(initposts);
-  useEffect(() => {
-    localStorage.setItem("posts", JSON.stringify(posts));
-  }, [posts]);
 
   return (
     <>
@@ -62,13 +83,13 @@ function App() {
               <>
                 <button onClick={() => setButtonPopup(true)} className="addButton btn btn-success btn-lg">Add</button>
                 <AddPostButton addToPosts={addToPosts} trigger={buttonPopup} setTrigger={setButtonPopup} />
-                <Body posts={posts} onDelete={onDelete} />
+                <EditButton editTrigger={editButtonPopup} setEditTrigger={setEditButtonPopup} editArr={editArr} onEdit={onEdit}/>
+                <Body posts={posts} onDelete={onDelete} onEdit={onEdit} setEditTrigger={setEditButtonPopup} />
               </>
             }
           ></Route>
           <Route exact path="/about" element={<About />}></Route>
         </Routes>
-
         <Footer />
       </Router>
     </>
