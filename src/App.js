@@ -20,6 +20,8 @@ function App() {
   const [editButtonPopup, setEditButtonPopup] = useState(false);
   const [editArr, setEditArr] = useState();
   const [posts, setPosts] = useState(initposts);
+  const [count] = useState(0);
+
   useEffect(() => {
     localStorage.setItem("posts", JSON.stringify(posts));
   }, [posts]);
@@ -45,13 +47,29 @@ function App() {
           return {
             sno: post.sno,
             title: post.title,
-            desc: post.desc
+            desc: post.desc,
+            count: post.count
           }
         }
         return e;
       });
       setPosts(newPost);
     }
+  }
+
+  const onLike = (post) => {
+    const newCount = posts.map(e => {
+      if(e.sno === post.sno) {
+        return {
+          sno: post.sno,
+            title: post.title,
+            desc: post.desc,
+            count: post.count+1
+        }
+      }
+      return e;
+    });
+    setPosts(newCount);
   }
 
   const addToPosts = (title, desc) => {
@@ -66,6 +84,7 @@ function App() {
       sno: sno,
       title: title,
       desc: desc,
+      count: count
     };
 
     setPosts([...posts, myPost]);
@@ -84,7 +103,7 @@ function App() {
                 <button onClick={() => setButtonPopup(true)} className="addButton btn btn-success btn-lg">Add</button>
                 <AddPostButton addToPosts={addToPosts} trigger={buttonPopup} setTrigger={setButtonPopup} />
                 <EditButton editTrigger={editButtonPopup} setEditTrigger={setEditButtonPopup} editArr={editArr} onEdit={onEdit}/>
-                <Body posts={posts} onDelete={onDelete} onEdit={onEdit} setEditTrigger={setEditButtonPopup} />
+                <Body posts={posts} onDelete={onDelete} onEdit={onEdit} setEditTrigger={setEditButtonPopup} onLike={onLike} />
               </>
             }
           ></Route>

@@ -1,3 +1,7 @@
+body {
+  background-color:Argb(71, 107, 137);
+}
+
 .footer {
   position: fixed;
   bottom: 0%;

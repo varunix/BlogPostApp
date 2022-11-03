@@ -10,6 +10,7 @@ export const Body = (props) => {
     "marginTop": "1%",
     "marginBottom": "1%",
   };
+
   return (
     <div className="container">
       <h3 className="my-3">Post List</h3>
@@ -24,6 +25,7 @@ export const Body = (props) => {
                     onDelete={props.onDelete}
                     setEditTrigger={props.setEditTrigger}
                     onEdit={props.onEdit}
+                    onLike={props.onLike}
                   />
                   <div style={lineStyle} />
                 </div>

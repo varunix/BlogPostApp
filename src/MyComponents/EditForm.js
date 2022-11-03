@@ -11,7 +11,8 @@ export const EditForm = (props) => {
           const newArr = {
             sno: props.editArr.sno,
             title: editTitle,
-            desc: editDesc
+            desc: editDesc,
+            count: props.editArr.count
           }
           props.onEdit(newArr, true);
       }
